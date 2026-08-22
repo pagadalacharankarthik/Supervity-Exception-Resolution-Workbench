@@ -151,7 +151,64 @@ cd frontend
 npm install
 npm run dev
 ```
-*Web client is available at `http://localhost:5173/`.*
+*   **Web client is available at `http://localhost:5173/`**.
+
+---
+
+## 🚢 Deployment Guide
+
+### Option 1: Docker-Based Local Deployment (Using PostgreSQL)
+If you want to run the workbench with a persistent PostgreSQL database instead of the SQLite fallback, you can spin up the alpine database image defined in the root directory:
+
+1.  **Start the database container**:
+    ```bash
+    docker compose up -d
+    ```
+2.  **Configure environment variables**:
+    In `backend/.env`, set the database URL:
+    ```bash
+    DATABASE_URL=postgresql://postgres:supervity_secure_password_2026@localhost:5432/supervity_workbench
+    ```
+3.  **Run backend migrations and seeder**:
+    ```bash
+    cd backend
+    python -m app.seed
+    python -m app.generate_demo_docs
+    python -m uvicorn app.main:app --host 127.0.0.1 --port 8000
+    ```
+
+---
+
+### Option 2: Production Cloud Deployment (Render, AWS, Vercel)
+To deploy the application to a cloud infrastructure, follow these instructions:
+
+#### 1. Database Layer (Managed PostgreSQL)
+*   Deploy a managed PostgreSQL database (e.g. AWS RDS, Supabase, or Render PostgreSQL).
+*   Copy the connection string and expose it to the backend as the `DATABASE_URL` environment variable.
+
+#### 2. Backend Layer (Python/FastAPI)
+*   **Platform**: Deploy to **AWS ECS/Fargate**, **Google Cloud Run**, or **Render**.
+*   **Docker Container**: Create a `Dockerfile` in `/backend`:
+    ```dockerfile
+    FROM python:3.10-slim
+    WORKDIR /app
+    COPY requirements.txt .
+    RUN pip install --no-cache-dir -r requirements.txt
+    COPY . .
+    EXPOSE 8000
+    CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+    ```
+*   Set environment variables: `DATABASE_URL` and optionally `OPENAI_API_KEY`/`GEMINI_API_KEY`.
+
+#### 3. Frontend Layer (React Static Assets)
+*   **Platform**: Deploy to **Vercel**, **Netlify**, or **AWS S3 + CloudFront**.
+*   **Build**: Compile the client bundle using:
+    ```bash
+    cd frontend
+    npm install
+    npm run build
+    ```
+*   **Configuration**: Point the production server domain to `src/services/api.ts`'s base URL and host the static `/dist` directory.
 
 ---
 
