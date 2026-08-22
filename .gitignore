@@ -1,8 +1,9 @@
-# Databases
+# Databases and Storage
 *.db
 *.sqlite
 app.db
 backend/app.db
+backend/app/storage/documents/
 
 # Virtual Environments
 .venv/
