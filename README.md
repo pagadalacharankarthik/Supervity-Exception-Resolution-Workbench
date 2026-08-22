@@ -212,6 +212,47 @@ To deploy the application to a cloud infrastructure, follow these instructions:
 
 ---
 
+### Option 3: Step-by-Step 100% Free Cloud Deployment (Vercel + Render + Neon)
+Follow these exact instructions to host the entire application live in the cloud without paying anything:
+
+#### 1. Free PostgreSQL Database (Neon.tech)
+1. Go to [Neon.tech](https://neon.tech/) and create a free account.
+2. Create a new project named `supervity-workbench` and select your region.
+3. Copy the **Connection String** (Postgres URI) from the dashboard:
+   `postgresql://alex:password@ep-cool-snowflake-1234.us-east-2.aws.neon.tech/neondb?sslmode=require`
+
+#### 2. Free FastAPI Backend (Render.com)
+1. Go to [Render.com](https://render.com/) and sign in using your GitHub account.
+2. Click **New +** and select **Web Service**.
+3. Select your repository `Supervity-Exception-Resolution-Workbench`.
+4. In the settings, configure the following:
+   *   **Name**: `supervity-backend`
+   *   **Root Directory**: `backend`
+   *   **Environment**: `Python 3`
+   *   **Build Command**: `pip install -r requirements.txt`
+   *   **Start Command**: `uvicorn app.main:app --host 0.0.0.0 --port $PORT`
+   *   **Plan**: **Free**
+5. Click **Advanced** and add the following Environment Variables:
+   *   `DATABASE_URL` = (Paste your Neon Connection String here)
+6. Click **Deploy Web Service**.
+7. Once deployed, copy your backend's public URL (e.g. `https://supervity-backend.onrender.com`).
+8. **Initialize Database Tables & Seeds**:
+   You can run database seeding by triggering Render's shell command tool, or by running it locally while pointing to the Neon DB connection string in your local `.env`.
+
+#### 3. Free React Frontend (Vercel.com)
+1. Go to [Vercel.com](https://vercel.com/) and sign in using your GitHub account.
+2. Click **Add New** and select **Project**.
+3. Import your repository `Supervity-Exception-Resolution-Workbench`.
+4. In the settings, configure:
+   *   **Framework Preset**: `Vite`
+   *   **Root Directory**: `frontend`
+5. Expand the **Environment Variables** section and add:
+   *   `VITE_API_URL` = `https://supervity-backend.onrender.com/api` (Replace with your actual Render backend URL followed by `/api`)
+6. Click **Deploy**.
+7. Once finished, Vercel will give you a public URL (e.g. `https://supervity-exception-resolution.vercel.app`) where you can log in, run exceptions detection, and test the Document Workbench live!
+
+---
+
 ## 👥 Seeded Quick-Demo Identities
 
 Authentication is governed by JWT cookie sessions. Use the credentials below to test user roles:
