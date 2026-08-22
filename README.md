@@ -1,0 +1,95 @@
+# 🛡️ Supervity Exception Resolution Workbench
+### *Evidence-Driven AI Exception Resolution & Document Verification for AP Transactions*
+
+The **Supervity Exception Resolution Workbench** is a professional enterprise application for auditing accounts payable anomalies. It integrates deterministic transaction rules, optical text extraction/OCR parsing, and evidence-grounded AI analysis to streamline human reviewer decisions while enforcing strict compliance bounds.
+
+---
+
+## 🏛️ System Architecture & Guardrails
+
+The workbench is built on a hybrid architecture designed for enterprise safety:
+
+1. **Deterministic Rule Engine**: All financial calculations, invoice matching, tax checks, and duplicate scans are executed in pure, strict Python backend logic. The AI is *never* used for mathematical operations or threshold checks, eliminating hallucination risks.
+2. **Evidence-Grounded AI Analysis**: AI investigations must only proceed on verified facts from database records or verified document fields. The AI provides advisory recommendations and structured reasoning, but is *never* permitted to directly perform mutations or close exceptions on its own.
+3. **Decoupled Risk Policy Layer**: Business policies live in the database as configurable rules (e.g. risk thresholds, confidence limits). The system evaluates AI suggestions against these rules to classify cases into `AUTO_RESOLVE`, `HUMAN_REVIEW`, or `ESCALATE` transitions.
+4. **Human-in-the-Loop & Audit Ledger**: Reviewers retain override capabilities. Manager-level sign-offs are enforced for high-value or missing PO escalations. A permanent, immutable ledger records all automated engine decisions and manual reviewer actions.
+
+---
+
+## 📂 Project Structure
+
+- **`/backend`**: FastAPI application with SQLAlchemy ORM (defaulting to SQLite `app.db` fallback).
+  - `app/engine.py`: Strict AP anomaly engine and policy decision calculator.
+  - `app/ai.py`: Evidence package assembler, prompt template builder, and LLM chat.
+  - `app/document_processor.py`: Text parser and OCR field normalizer.
+  - `app/routes/`: Specialized API routers (auth, dashboard, exceptions, investigation, policies, documents, audit).
+  - `app/seed.py`: Seeder script generating initial vendors, POs, invoices, and standard test cases.
+- **`/frontend`**: React client built with Vite, TypeScript, Tailwind CSS, and Lucide icons.
+  - `src/pages/Dashboard.tsx`: Exceptions Queue with sorting, filtering, and engine controls.
+  - `src/pages/Workspace.tsx`: Double-pane case detail panel with evidence list, AI chat, policy results, and resolution actions.
+  - `src/pages/Documents.tsx`: Document Workbench for uploading invoices, inspecting field confidence, editing, and verifying fields.
+  - `src/pages/Policies.tsx`: Manager threshold settings dashboard.
+  - `src/pages/Audit.tsx`: Permanent audit ledger view.
+
+---
+
+## 🚀 Quick Start Guide
+
+### 1. Environment & Setup
+
+Ensure Python 3.10+ and Node.js 18+ are installed.
+
+**Clone & Install Backend Dependencies**:
+```bash
+cd backend
+pip install -r requirements.txt
+```
+
+**Seed Database & Generate Synthetic Docs**:
+```bash
+# Seed schemas, vendors, users, policies, and standard exceptions
+python -m app.seed
+
+# Generate synthetic invoice text files for Document Workbench testing
+python -m app.generate_demo_docs
+```
+
+**Launch backend server**:
+```bash
+python -m uvicorn app.main:app --host 127.0.0.1 --port 8000
+```
+*API documentation is available at `http://127.0.0.1:8000/docs`.*
+
+---
+
+### 2. Frontend React Client
+
+**Install dependencies & launch dev server**:
+```bash
+cd frontend
+npm install
+npm run dev
+```
+*Web client is available at `http://localhost:5173/`.*
+
+---
+
+## 👥 Seeded Quick-Demo Identities
+
+Authentication is governed by JWT cookie sessions. Use the credentials below to test user roles:
+
+| Role | Name | Email | Password |
+| :--- | :--- | :--- | :--- |
+| **Reviewer** | Alex Audit | `reviewer@supervity-demo.com` | `supervity123` |
+| **Manager** | Sarah Manager | `manager@supervity-demo.com` | `supervity123` |
+
+---
+
+## 🎬 Testing & Verification Walkthrough
+
+See [`DEMO_SCRIPT.md`](file:///c:/Users/chara/OneDrive/Desktop/Supervity/DEMO_SCRIPT.md) for a comprehensive 5-minute step-by-step walkthrough demonstrating:
+1. **Case 1 (Duplicate Invoice)**: Auto-decline and closed status on identical matching amounts.
+2. **Case 2 (Price Mismatch)**: Cloud rate deviation triggering review, AI investigation, policy evaluation, and reviewer override.
+3. **Case 3 (Missing PO Anomaly)**: Escalation lock forcing manager approval due to high financial risk.
+4. **Document Ingestion**: Uploading invoices, verifying OCR fields, and logging field history.
+5. **System Audit Logs**: Inspecting timelines of actions and policy updates.
