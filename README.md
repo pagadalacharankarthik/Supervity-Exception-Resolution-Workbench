@@ -61,6 +61,40 @@ Our technical choices were driven by the requirements of high-performance financ
 *   **Backend**: Built with **FastAPI** in Python. FastAPI provides rapid, asynchronous endpoints, auto-documents our API contracts, and allows us to run standard numeric parsing and data calculations in Python.
 *   **Database**: Uses **PostgreSQL** with **SQLAlchemy ORM** to enforce strict foreign key constraints and transactional integrity on financial records, with a seamless SQLite fallback (`app.db`) for local developer environments.
 
+```mermaid
+graph TD
+    subgraph UI["Client Presentation (Frontend)"]
+        react[React 18 Component Tree]
+        vite[Vite Dev Server]
+        ts[TypeScript Typings]
+        tailwind[Tailwind CSS Theme]
+        react --- ts
+        react --- tailwind
+        vite --- react
+    end
+
+    subgraph Service["Application Core (Backend)"]
+        fastapi[FastAPI Routers & Schemas]
+        uvicorn[Uvicorn ASGI Server]
+        rules[Python Rule Engine]
+        ai[AI Advisor Interface]
+        fastapi --- rules
+        fastapi --- ai
+        uvicorn --- fastapi
+    end
+
+    subgraph Data["Persistence & Storage (Database)"]
+        orm[SQLAlchemy ORM]
+        pg[(PostgreSQL Production DB)]
+        sqlite[(SQLite Local Fallback app.db)]
+        orm --> pg
+        orm --> sqlite
+    end
+
+    UI -->|JSON HTTPS / JWT Auth| Service
+    Service -->|SQL Sessions| Data
+```
+
 ---
 
 ## 📂 Project Structure
