@@ -21,10 +21,22 @@ app = FastAPI(
     version="1.0.0"
 )
 
+import os
+
+# Build allowed origins from environment variable + local dev defaults
+_frontend_url = os.environ.get("FRONTEND_URL", "")
+_allowed_origins = ["http://localhost:5173", "http://127.0.0.1:5173"]
+if _frontend_url:
+    # Support comma-separated list e.g. "https://app.vercel.app,https://custom.domain.com"
+    for url in _frontend_url.split(","):
+        url = url.strip()
+        if url and url not in _allowed_origins:
+            _allowed_origins.append(url)
+
 # Enable CORS for frontend connection
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://127.0.0.1:5173"],
+    allow_origins=_allowed_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
