@@ -238,8 +238,8 @@ export const Workspace: React.FC<WorkspaceProps> = ({ exceptionId, onBackToQueue
   const isManager = user?.role === 'manager';
 
   // Get PO amount from evidence for display
-  const poEvidenceItem = detail.evidence?.find(e => e.field === 'po_total' || e.source?.includes('PO'));
-  const invEvidenceItem = detail.evidence?.find(e => e.field === 'invoice_total' || e.source?.includes('INV'));
+  const _poEvidenceItem = detail.evidence?.find(e => e.field === 'po_total' || e.source?.includes('PO'));
+  const _invEvidenceItem = detail.evidence?.find(e => e.field === 'invoice_total' || e.source?.includes('INV'));
 
   const getDecisionColor = (dec?: string) => {
     if (dec === 'AUTO_RESOLVE') return 'text-emerald-700 bg-emerald-50 border-emerald-200';

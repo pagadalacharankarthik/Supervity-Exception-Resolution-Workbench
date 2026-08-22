@@ -2,7 +2,7 @@ import React from 'react';
 
 interface StatusBadgeProps {
   value: string;
-  type?: 'status' | 'severity' | 'risk' | 'confidence';
+  type?: 'status' | 'severity' | 'risk' | 'confidence' | 'type';
 }
 
 const STATUS_STYLES: Record<string, string> = {

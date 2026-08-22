@@ -70,6 +70,7 @@ export interface AuditEvent {
   previous_status?: string;
   new_status?: string;
   reason?: string;
+  exception_id?: string;
   meta_data?: Record<string, any>;
   timestamp: string;
 }
@@ -128,9 +129,11 @@ export interface DashboardStats {
   under_review: number;
   escalated: number;
   resolved: number;
+  resolved_exceptions: number;
   auto_resolved: number;
   false_positives: number;
   high_risk_exceptions: number;
+  ai_resolvable_exceptions: number;
 }
 
 export interface TrendPoint {

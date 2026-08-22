@@ -1,7 +1,7 @@
 import type {
-  User, Exception, ExceptionDetail, DashboardStats,
+  User, ExceptionDetail, DashboardStats,
   DashboardTrend, DashboardAnalytics, PaginatedExceptions,
-  Policy, PolicyDecision, AuditEvent, Investigation, Document
+  Policy, PolicyDecision, AuditEvent, Investigation, Document, Resolution
 } from '../types';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000/api';
