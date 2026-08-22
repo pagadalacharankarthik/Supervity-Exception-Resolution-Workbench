@@ -9,6 +9,43 @@ The **Supervity Exception Resolution Workbench** is a professional enterprise ap
 
 The workbench is built on a hybrid architecture designed for enterprise safety. It enforces four primary architectural guardrails:
 
+```mermaid
+flowchart TD
+    subgraph Ingestion["1. Document Ingestion"]
+        doc[Raw Invoice PDF/Image] --> ocr[OCR Text Extraction]
+        ocr --> fields[Extracted Fields & Confidence]
+        fields --> verify[Reviewer Verification & Edits]
+    end
+
+    subgraph Detection["2. Deterministic Detection"]
+        verify --> db[(Verified Database Facts)]
+        po[(Contract POs / Ledgers)] --> eng[Python Rule Engine]
+        db --> eng
+        eng --> exc[Exception Triggered]
+    end
+
+    subgraph Advisory["3. Grounded AI Investigation"]
+        exc --> pkg[Verified Evidence Fact Package]
+        pkg --> llm[AI Analyst - Read-Only LLM]
+        llm --> report[Advisory Report: Confidence, Risk & Recommendation]
+    end
+
+    subgraph Compliance["4. Decoupled Policy Routing"]
+        report --> policy[Database Policy Threshold Rules]
+        policy --> route{Policy Decision}
+        route -->|Low Risk / High Conf| auto[AUTO_RESOLVE]
+        route -->|Medium Risk| review[HUMAN_REVIEW]
+        route -->|High Risk / Missing PO| esc[ESCALATE]
+    end
+
+    subgraph Resolution["5. Human-in-the-Loop & Audit"]
+        auto --> resolve[Resolution Executed]
+        review -->|Reviewer Comments| resolve
+        esc -->|Manager Approval/Decline| resolve
+        resolve --> ledger[(Immutable Audit Ledger)]
+    end
+```
+
 1. **Deterministic Rule Engine**: All financial calculations, invoice matching, tax checks, and duplicate scans are executed in pure, strict Python backend logic. The AI is *never* used for mathematical operations or threshold checks, eliminating calculation hallucination risks.
 2. **Evidence-Grounded AI Analysis**: AI investigations must only proceed on verified facts from database records or verified document fields. The AI provides advisory recommendations and structured reasoning, but is *never* permitted to directly perform mutations or close exceptions on its own.
 3. **Decoupled Compliance Policy Layer**: Business policies live in the database as configurable rules (e.g., risk thresholds, confidence limits). The system evaluates AI suggestions against these rules to classify cases into `AUTO_RESOLVE`, `HUMAN_REVIEW`, or `ESCALATE` transitions.
