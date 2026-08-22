@@ -7,12 +7,22 @@ The **Supervity Exception Resolution Workbench** is a professional enterprise ap
 
 ## 🏛️ System Architecture & Guardrails
 
-The workbench is built on a hybrid architecture designed for enterprise safety:
+The workbench is built on a hybrid architecture designed for enterprise safety. It enforces four primary architectural guardrails:
 
-1. **Deterministic Rule Engine**: All financial calculations, invoice matching, tax checks, and duplicate scans are executed in pure, strict Python backend logic. The AI is *never* used for mathematical operations or threshold checks, eliminating hallucination risks.
+1. **Deterministic Rule Engine**: All financial calculations, invoice matching, tax checks, and duplicate scans are executed in pure, strict Python backend logic. The AI is *never* used for mathematical operations or threshold checks, eliminating calculation hallucination risks.
 2. **Evidence-Grounded AI Analysis**: AI investigations must only proceed on verified facts from database records or verified document fields. The AI provides advisory recommendations and structured reasoning, but is *never* permitted to directly perform mutations or close exceptions on its own.
-3. **Decoupled Risk Policy Layer**: Business policies live in the database as configurable rules (e.g. risk thresholds, confidence limits). The system evaluates AI suggestions against these rules to classify cases into `AUTO_RESOLVE`, `HUMAN_REVIEW`, or `ESCALATE` transitions.
+3. **Decoupled Compliance Policy Layer**: Business policies live in the database as configurable rules (e.g., risk thresholds, confidence limits). The system evaluates AI suggestions against these rules to classify cases into `AUTO_RESOLVE`, `HUMAN_REVIEW`, or `ESCALATE` transitions.
 4. **Human-in-the-Loop & Audit Ledger**: Reviewers retain override capabilities. Manager-level sign-offs are enforced for high-value or missing PO escalations. A permanent, immutable ledger records all automated engine decisions and manual reviewer actions.
+
+---
+
+## 🛠️ Technology Stack & Rationale
+
+Our technical choices were driven by the requirements of high-performance financial systems:
+
+*   **Frontend**: Built with **React, Vite, and TypeScript**. React provides a component-driven, responsive UI for fast-paced reviewers, Vite ensures sub-second Hot Module Replacement (HMR) for developer efficiency, and TypeScript guarantees static type safety across our API boundaries.
+*   **Backend**: Built with **FastAPI** in Python. FastAPI provides rapid, asynchronous endpoints, auto-documents our API contracts, and allows us to run standard numeric parsing and data calculations in Python.
+*   **Database**: Uses **PostgreSQL** with **SQLAlchemy ORM** to enforce strict foreign key constraints and transactional integrity on financial records, with a seamless SQLite fallback (`app.db`) for local developer environments.
 
 ---
 
