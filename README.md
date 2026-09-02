@@ -14,7 +14,7 @@ The **Supervity Exception Resolution Workbench** is a professional enterprise ap
 | 📖 **Swagger / API Docs** | [/docs](https://supervity-exception-resolution-workbench-kpjg.onrender.com/docs) |-->
 | 💻 **GitHub Repository** | [Supervity-Exception-Resolution-Workbench](https://github.com/pagadalacharankarthik/Supervity-Exception-Resolution-Workbench) |
 
-> ⚠️ **Note**: Backend runs on Render's free tier — first load after inactivity may take **30–60 seconds** to wake up.
+<!--> ⚠️ **Note**: Backend runs on Render's free tier — first load after inactivity may take **30–60 seconds** to wake up.-->
 
 ## 🔐 Demo Login Credentials
 
