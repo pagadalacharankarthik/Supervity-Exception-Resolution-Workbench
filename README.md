@@ -5,6 +5,26 @@ The **Supervity Exception Resolution Workbench** is a professional enterprise ap
 
 ---
 
+## 🌐 Live Demo
+
+| | Link |
+|---|---|
+| 🖥️ **Frontend App** | [supervity-exception-resolution-work-one.vercel.app](https://supervity-exception-resolution-work-one.vercel.app) |
+| ⚙️ **Backend API** | [supervity-exception-resolution-workbench-kpjg.onrender.com](https://supervity-exception-resolution-workbench-kpjg.onrender.com) |
+| 📖 **Swagger / API Docs** | [/docs](https://supervity-exception-resolution-workbench-kpjg.onrender.com/docs) |
+| 💻 **GitHub Repository** | [Supervity-Exception-Resolution-Workbench](https://github.com/pagadalacharankarthik/Supervity-Exception-Resolution-Workbench) |
+
+> ⚠️ **Note**: Backend runs on Render's free tier — first load after inactivity may take **30–60 seconds** to wake up.
+
+## 🔐 Demo Login Credentials
+
+| Role | Email | Password |
+|---|---|---|
+| **Reviewer** | `reviewer@supervity-demo.com` | `supervity123` |
+| **Manager** | `manager@supervity-demo.com` | `supervity123` |
+
+---
+
 ## 🏛️ System Architecture & Guardrails
 
 The workbench is built on a hybrid architecture designed for enterprise safety. It enforces four primary architectural guardrails:
